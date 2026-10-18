@@ -1,0 +1,37 @@
+{
+  "protocolVersion": "0.2",
+  "capabilities": {
+    "type": "AI Agent",
+    "description": "Source-backed country policy data for AI agents; pay-per-call via x402 (XRP or USDC). 30 countries covered with visa, customs, immigration, and regulatory data.",
+    "skills": [
+      "country-policy-data",
+      "visa-information",
+      "travel-regulations",
+      "x402-payment"
+    ],
+    "tools": [
+      "xrplme_get_country_data",
+      "xrplme_get_countries",
+      "xrplme_submit_survey",
+      "xrplme_get_survey_stats"
+    ]
+  },
+  "name": "XRPLME Country Intelligence",
+  "description": "Source-backed country policy data for AI agents. Pay per query in XRP or USDC via x402. 30 countries with visa, customs, immigration, and regulatory information.",
+  "url": "https://github.com/DaimyoVegan/xrplme-mcp-server",
+  "version": "1.0.1",
+  "pricing": {
+    "model": "pay-per-call",
+    "currency": ["XRP", "USDC"],
+    "price": "1 XRP or $1 USDC per standard query; 5 XRP or $7 USDC per AI-enhanced query"
+  },
+  "payment": {
+    "protocol": "x402",
+    "networks": ["xrpl", "solana"]
+  },
+  "publisher": {
+    "name": "DaimyoVegan",
+    "url": "https://xrplme.online"
+  },
+  "tags": ["x402", "xrpl", "solana", "country-data", "visa", "api", "ai-agent"]
+}
