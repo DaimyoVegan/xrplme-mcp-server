@@ -45,15 +45,15 @@ Eight tools are exposed. Six are free; two require payment.
 | `xrplme_get_country_data` | Latest data + freshness for one country | **Paid** |
 | `xrplme_get_country_schema` | Field schema for one country | **Paid** |
 | `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
-| `xrplme_submit_survey` | Submit agent feedback | Free |
+| `xrplme_submit_survey` | Submit feedback | Free |
 | `xrplme_get_survey_stats` | Aggregated survey statistics | Free |
 
 ### Prices
 
 | Tier | XRP Ledger | Solana |
 |---|---|---|
-| Standard (`xrplme_get_country_schema`) | 0.1 XRP | 0.05 USDC |
-| AI-enhanced (`xrplme_get_country_data`) | 0.5 XRP | 0.25 USDC |
+| Standard (`xrplme_get_country_schema`) | 0.1 XRP | 1.0 USDC |
+| AI-enhanced (`xrplme_get_country_data`) | 0.5 XRP | 7.0 USDC |
 
 `xrplme_get_pricing` always returns the live values — query it rather than
 hard-coding these.
@@ -66,9 +66,9 @@ hard-coding these.
    exact amount, asset, recipient, and accepted networks. Nothing is charged and
    no data is returned.
 2. Pay on either rail:
-   - **XRP Ledger** — pass `x_payment_signature` + `x_inv_id`
-   - **Solana** — pass `x_sol_payload` (USDC; a Solana Pay URI is included in
-     the 402 response)
+   - **XRP Ledger** — pass `X-PAYMENT-SIGNATURE` + `X-INV-ID` headers
+   - **Solana** — pass `X-PAYMENT-SIGNATURE` header with a base64-encoded V2
+     payment payload containing the signed Solana transaction
 3. Call the tool again with the payment attached. On successful settlement the
    data is returned.
 
@@ -84,6 +84,35 @@ rejected. Data is released only after settlement is confirmed, never before.
 
 Solana payments use native USDC
 (`EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`).
+
+### Solana payment details
+
+Solana pays use the x402 exact payment scheme via a local facilitator
+(`http://127.0.0.1:8402`). The 402 response includes a `feePayer` in the
+`extra` field — this is the wallet that pays Solana transaction fees. Your
+client must:
+
+1. Build a transaction with 3 instructions: `SetComputeUnitLimit`,
+   `SetComputeUnitPrice`, and `TransferChecked` (USDC, 6 decimals)
+2. Set the `feePayer` from the 402 response as the transaction fee payer
+3. Partially sign the transaction with your wallet (which holds the USDC) —
+   **do not** sign with the fee payer; the facilitator adds its signature
+4. Encode the partially-signed transaction as base64 and include it in a V2
+   payment payload:
+
+```json
+{
+  "x402Version": 2,
+  "payload": {"transaction": "<base64-encoded signed tx>"},
+  "accepted": { /* from the 402 response's accepts[0] */ }
+}
+```
+
+5. Base64-encode the entire payload JSON and send it as the
+   `X-PAYMENT-SIGNATURE` header on the retry request.
+
+See [`xrplme-mcp-client/examples/x402_payment_solana.py`](https://github.com/DaimyoVegan/xrplme-mcp-client/blob/main/examples/x402_payment_solana.py)
+for a complete end-to-end example.
 
 ---
 
