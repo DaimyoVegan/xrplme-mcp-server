@@ -1,37 +1,91 @@
 {
-  "protocolVersion": "0.2",
+  "protocolVersion": "1.0.0",
+  "name": "XRPLME Country Intelligence MCP Agent",
+  "description": "MCP server providing source-backed country policy data for AI agents. Pay-per-call via x402 (XRP or USDC). 30 countries with visa, customs, immigration, and regulatory data.",
+  "url": "https://api.xrplme.online/mcp",
+  "version": "1.0.1",
+  "authentication": {
+    "type": "none"
+  },
   "capabilities": {
-    "type": "AI Agent",
-    "description": "Source-backed country policy data for AI agents; pay-per-call via x402 (XRP or USDC). 30 countries covered with visa, customs, immigration, and regulatory data.",
-    "skills": [
-      "country-policy-data",
-      "visa-information",
-      "travel-regulations",
-      "x402-payment"
+    "extensions": [
+      {
+        "uri": "https://a2a-registry.org/extensions/registry/v1",
+        "required": false,
+        "params": {
+          "identity": {
+            "provider": "github",
+            "username": "DaimyoVegan",
+            "packageName": "github.DaimyoVegan.xrplme-mcp-server"
+          }
+        }
+      }
     ],
-    "tools": [
-      "xrplme_get_country_data",
-      "xrplme_get_countries",
-      "xrplme_submit_survey",
-      "xrplme_get_survey_stats"
+    "skills": [
+      {
+        "name": "xrplme_get_country_data",
+        "description": "Get policy data for a specific country - visa requirements, customs, immigration, regulatory info. Source-backed from official government APIs.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string",
+              "description": "Country slug (e.g. thailand, japan, singapore, germany, hong_kong)"
+            },
+            "topic": {
+              "type": "string",
+              "description": "Topic: entry, extension, work, residence, customs, or all. Default: all"
+            },
+            "ai": {
+              "type": "boolean",
+              "description": "Use AI-enhanced response. Adds cost (5 XRP/$7 vs 1 XRP/$1 standard)."
+            }
+          },
+          "required": ["country"]
+        }
+      },
+      {
+        "name": "xrplme_get_countries",
+        "description": "List all available countries with shortnames and slugs.",
+        "input_schema": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "xrplme_submit_survey",
+        "description": "Submit a survey response tied to a paid invoice. Only valid settled invoice IDs accepted.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "invoice_id": { "type": "string", "description": "Valid invoice ID from a completed payment" },
+            "answers": {
+              "type": "object",
+              "properties": {
+                "easier": { "type": "string" },
+                "wanted_info": { "type": "string" },
+                "worth_price": { "type": "string" },
+                "paid_more": { "type": "string" },
+                "had_capability": { "type": "string" },
+                "looked_elsewhere": { "type": "string" }
+              },
+              "required": ["easier", "wanted_info", "worth_price", "paid_more", "had_capability", "looked_elsewhere"]
+            }
+          },
+          "required": ["invoice_id", "answers"]
+        }
+      },
+      {
+        "name": "xrplme_get_survey_stats",
+        "description": "Get anonymous aggregate survey statistics (no PII)."
+      }
     ]
   },
-  "name": "XRPLME Country Intelligence",
-  "description": "Source-backed country policy data for AI agents. Pay per query in XRP or USDC via x402. 30 countries with visa, customs, immigration, and regulatory information.",
-  "url": "https://github.com/DaimyoVegan/xrplme-mcp-server",
-  "version": "1.0.1",
+  "metadata": {
+    "registryIdentityProvider": "github",
+    "registryIdentity": "DaimyoVegan",
+    "registryPackageName": "github.DaimyoVegan.xrplme-mcp-server"
+  },
   "pricing": {
-    "model": "pay-per-call",
-    "currency": ["XRP", "USDC"],
-    "price": "1 XRP or $1 USDC per standard query; 5 XRP or $7 USDC per AI-enhanced query"
+    "standard": "1 XRP or $1 USDC per query",
+    "ai_enhanced": "5 XRP or $7 USDC per query"
   },
-  "payment": {
-    "protocol": "x402",
-    "networks": ["xrpl", "solana"]
-  },
-  "publisher": {
-    "name": "DaimyoVegan",
-    "url": "https://xrplme.online"
-  },
-  "tags": ["x402", "xrpl", "solana", "country-data", "visa", "api", "ai-agent"]
+  "logo_url": "https://xrplme.online/favicon.ico"
 }
