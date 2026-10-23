@@ -50,10 +50,10 @@ Eight tools are exposed. Six are free; two require payment.
 
 ### Prices
 
-| Tier | XRP Ledger | Solana |
-|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 0.1 XRP | 1.0 USDC |
-| AI-enhanced (`xrplme_get_country_data`) | 0.5 XRP | 7.0 USDC |
+| Tier | XRP Ledger | Solana | Card (on-ramp) |
+|---|---|---|---|
+| Standard (`xrplme_get_country_schema`) | 0.1 XRP | 1.0 USDC | $2 |
+| AI-enhanced (`xrplme_get_country_data`) | 0.5 XRP | 7.0 USDC | $25 |
 
 `xrplme_get_pricing` always returns the live values — query it rather than
 hard-coding these.
@@ -65,10 +65,13 @@ hard-coding these.
 1. Call a paid tool with no payment. The server replies **HTTP 402** with the
    exact amount, asset, recipient, and accepted networks. Nothing is charged and
    no data is returned.
-2. Pay on either rail:
+2. Pay on any of three rails:
    - **XRP Ledger** — pass `X-PAYMENT-SIGNATURE` + `X-INV-ID` headers
    - **Solana** — pass `X-PAYMENT-SIGNATURE` header with a base64-encoded V2
      payment payload containing the signed Solana transaction
+   - **Credit card** — open the Crossmint on-ramp URL from
+     `https://api.xrplme.online/api/v1/card/start`, buy XRP with a card in
+     your browser, then pay the x402 invoice. No crypto wallet required.
 3. Call the tool again with the payment attached. On successful settlement the
    data is returned.
 
