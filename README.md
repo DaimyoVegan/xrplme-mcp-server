@@ -42,8 +42,8 @@ Eight tools are exposed. Six are free; two require payment.
 | `xrplme_list_countries` | List the 30 countries | Free |
 | `xrplme_get_country_status` | Live health probe for one country | Free |
 | `xrplme_get_pricing` | Current prices for both rails | Free |
-| `xrplme_get_country_data` | Latest data + freshness for one country | **Paid** |
-| `xrplme_get_country_schema` | Field schema for one country | **Paid** |
+| `xrplme_get_country_data` | Latest structured data + sources + freshness for one country | **Paid** |
+| `xrplme_get_country_schema` | Field schema for one country (JSON Schema) | **Paid** |
 | `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
 | `xrplme_submit_survey` | Submit feedback | Free |
 | `xrplme_get_survey_stats` | Aggregated survey statistics | Free |
@@ -140,3 +140,19 @@ Listed in the official MCP Registry as
   regulators. Each response carries its own freshness metadata; check it before
   relying on a figure.
 - Coverage is 30 countries. `xrplme_list_countries` is the authoritative list.
+---
+
+## Response Schema
+
+Every paid response follows a structured v1 schema documented at
+https://xrplme.online/schema/v1/response-schema.json.
+
+Key fields:
+
+- `meta` — country slug, query ID, retrieval timestamp, data freshness, payment proof
+- `sources[]` — array of primary sources with URL, publisher, date, and confidence score
+- `facts` — deterministic structured data by domain (company_formation, labor, tax, etc.)
+- `synthesis` — AI summary, key risks, contradictions found, overall confidence
+- `agent_hints` — recommended follow-up tools, related countries, update frequency
+
+This structure lets agents chain calls without re-parsing prose.

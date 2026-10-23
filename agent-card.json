@@ -1,7 +1,7 @@
 {
   "protocolVersion": "1.0.0",
   "name": "XRPLME Country Intelligence MCP Agent",
-  "description": "MCP server providing source-backed country policy data for AI agents. Pay-per-call via x402 (XRP or USDC). 30 countries with visa, customs, immigration, and regulatory data.",
+  "description": "Source-backed country policy data for AI agents; pay-per-call via x402. Structured JSON with sources[], confidence, schema at https://xrplme.online/schema/v1/response-schema.json",
   "url": "https://api.xrplme.online/mcp",
   "version": "1.0.1",
   "authentication": {
@@ -24,7 +24,7 @@
     "skills": [
       {
         "name": "xrplme_get_country_data",
-        "description": "Get policy data for a specific country - visa requirements, customs, immigration, regulatory info. Source-backed from official government APIs.",
+        "description": "Latest structured policy data for one country. Returns JSON with meta, sources[], facts, synthesis, agent_hints. Paid: XRP 0.5 or USDC 0.25.",
         "input_schema": {
           "type": "object",
           "properties": {
@@ -41,40 +41,70 @@
               "description": "Use AI-enhanced response. Adds cost (5 XRP/$7 vs 1 XRP/$1 standard)."
             }
           },
-          "required": ["country"]
+          "required": [
+            "country"
+          ]
         }
       },
       {
         "name": "xrplme_get_countries",
         "description": "List all available countries with shortnames and slugs.",
-        "input_schema": { "type": "object", "properties": {} }
+        "input_schema": {
+          "type": "object",
+          "properties": {}
+        }
       },
       {
         "name": "xrplme_submit_survey",
-        "description": "Submit a survey response tied to a paid invoice. Only valid settled invoice IDs accepted.",
+        "description": "Submit feedback on data quality. Tied to paid invoice ID. Free.",
         "input_schema": {
           "type": "object",
           "properties": {
-            "invoice_id": { "type": "string", "description": "Valid invoice ID from a completed payment" },
+            "invoice_id": {
+              "type": "string",
+              "description": "Valid invoice ID from a completed payment"
+            },
             "answers": {
               "type": "object",
               "properties": {
-                "easier": { "type": "string" },
-                "wanted_info": { "type": "string" },
-                "worth_price": { "type": "string" },
-                "paid_more": { "type": "string" },
-                "had_capability": { "type": "string" },
-                "looked_elsewhere": { "type": "string" }
+                "easier": {
+                  "type": "string"
+                },
+                "wanted_info": {
+                  "type": "string"
+                },
+                "worth_price": {
+                  "type": "string"
+                },
+                "paid_more": {
+                  "type": "string"
+                },
+                "had_capability": {
+                  "type": "string"
+                },
+                "looked_elsewhere": {
+                  "type": "string"
+                }
               },
-              "required": ["easier", "wanted_info", "worth_price", "paid_more", "had_capability", "looked_elsewhere"]
+              "required": [
+                "easier",
+                "wanted_info",
+                "worth_price",
+                "paid_more",
+                "had_capability",
+                "looked_elsewhere"
+              ]
             }
           },
-          "required": ["invoice_id", "answers"]
+          "required": [
+            "invoice_id",
+            "answers"
+          ]
         }
       },
       {
         "name": "xrplme_get_survey_stats",
-        "description": "Get anonymous aggregate survey statistics (no PII)."
+        "description": "Anonymous aggregate survey stats + quality trends. Free."
       }
     ]
   },
@@ -84,8 +114,17 @@
     "registryPackageName": "github.DaimyoVegan.xrplme-mcp-server"
   },
   "pricing": {
-    "standard": "1 XRP or $1 USDC per query",
-    "ai_enhanced": "5 XRP or $7 USDC per query"
+    "standard": "1 XRP or 0.05 USDC",
+    "ai": "5 XRP or 0.25 USDC",
+    "notes": "Payment is auth. 6 free tools. Card on-ramp available."
   },
-  "logo_url": "https://xrplme.online/favicon.ico"
+  "logo_url": "https://xrplme.online/favicon.ico",
+  "resources": [
+    {
+      "uri": "https://xrplme.online/schema/v1/response-schema.json",
+      "name": "xrplme_v1_response_schema",
+      "description": "JSON Schema v1.0 for all paid data responses.",
+      "mimeType": "application/json"
+    }
+  ]
 }
