@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "xrplme": {
+      "type": "http",
+      "url": "https://api.xrplme.online/mcp",
+      "headers": {
+        "User-Agent": "ClaudeDesktop/1.0"
+      }
+    }
+  }
+}

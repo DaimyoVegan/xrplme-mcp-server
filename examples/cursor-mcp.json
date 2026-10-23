@@ -1,0 +1,11 @@
+{
+  "mcp": {
+    "servers": {
+      "xrplme": {
+        "type": "http",
+        "url": "https://api.xrplme.online/mcp",
+        "description": "Source-backed country policy data. Pay per call via x402 (XRP or USDC). Schema: https://xrplme.online/schema/v1/response-schema.json"
+      }
+    }
+  }
+}
