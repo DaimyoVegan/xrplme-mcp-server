@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "XRPLME Country Data Response v1",
+  "description": "Structured response schema for paid country data queries. Every paid response includes meta (with payment proof), sources[], facts, synthesis, and agent_hints.",
+  "type": "object",
+  "required": ["meta", "sources", "facts", "synthesis", "agent_hints"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Metadata about the response, payment, and data provenance.",
+      "required": ["country_slug", "query_id", "retrieved_at", "schema_version", "payment"],
+      "properties": {
+        "country_slug": { "type": "string", "example": "thailand" },
+        "query_id": { "type": "string", "format": "uuid", "description": "Unique request identifier for traceability." },
+        "retrieved_at": { "type": "string", "format": "date-time", "description": "When this response was generated (ISO 8601 UTC)." },
+        "data_freshness": {
+          "type": "object",
+          "description": "Freshness window of the underlying source data.",
+          "properties": {
+            "oldest_source": { "type": "string", "format": "date", "example": "2025-11-01" },
+            "newest_source": { "type": "string", "format": "date", "example": "2026-09-15" },
+            "last_verified": { "type": "string", "format": "date", "example": "2026-10-20" }
+          }
+        },
+        "payment": {
+          "type": "object",
+          "description": "On-chain payment proof. The payment IS the authentication.",
+          "required": ["rail", "txid", "amount", "invoice_id"],
+          "properties": {
+            "rail": { "type": "string", "enum": ["xrpl", "solana", "card"] },
+            "txid": { "type": "string", "description": "On-chain transaction hash (empty if card on-ramp still settling)." },
+            "amount": { "type": "string", "example": "0.5 XRP" },
+            "invoice_id": { "type": "string" }
+          }
+        },
+        "schema_version": { "type": "string", "example": "1.0.0" }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Primary sources backing the response. Each fact references sources by ID.",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "url"],
+        "properties": {
+          "id": { "type": "string", "example": "src_01" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "publisher": { "type": "string", "example": "gov.th" },
+          "published": { "type": "string", "format": "date", "description": "When the source document was published." },
+          "retrieved": { "type": "string", "format": "date-time", "description": "When xrplme fetched this source." },
+          "type": { "type": "string", "enum": ["official", "statute", "secondary", "news"] },
+          "language": { "type": "string", "enum": ["en", "th", "ja", "zh", "other"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1, "description": "Source reliability score (0.0-1.0)." }
+        }
+      }
+    },
+    "facts": {
+      "type": "object",
+      "description": "Structured, deterministic facts broken down by policy domain.",
+      "properties": {
+        "company_formation": { "type": "object" },
+        "labor": { "type": "object" },
+        "tax": { "type": "object" },
+        "crypto_regulation": { "type": "object" },
+        "trade": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "synthesis": {
+      "type": "object",
+      "description": "AI-synthesized analysis layered on top of facts.",
+      "required": ["summary", "confidence_overall"],
+      "properties": {
+        "summary": { "type": "string", "description": "2-3 sentence executive summary for agents." },
+        "key_risks": { "type": "array", "items": { "type": "string" } },
+        "comparison_hooks": { "type": "array", "items": { "type": "string" }, "description": "Brief vs-other-country notes." },
+        "confidence_overall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "contradictions_found": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["topic", "source_a", "source_b", "resolution"],
+            "properties": {
+              "topic": { "type": "string" },
+              "source_a": { "type": "string" },
+              "source_b": { "type": "string" },
+              "resolution": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "agent_hints": {
+      "type": "object",
+      "description": "Hints for agent tool chaining and follow-up.",
+      "properties": {
+        "recommended_followup_tools": { "type": "array", "items": { "type": "string" } },
+        "related_countries": { "type": "array", "items": { "type": "string" } },
+        "update_frequency_days": { "type": "integer" }
+      }
+    }
+  }
+}
