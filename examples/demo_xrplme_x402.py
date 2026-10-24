@@ -4,7 +4,7 @@ DEMO: xrplme Online - x402 Payment + Structured Data Flow
 =========================================================
 Shows the complete flow:
   1. POST /wc/v1/{country}/bot  → 402 with x402 invoice
-  2. Pay via XRPL mainnet (0.5 XRP)
+  2. Pay via XRPL mainnet (5 XRP)
   3. POST again with X-PAYMENT-SIGNATURE + X-INVOICE-ID headers → 200
   4. Response is v1-structured JSON with sources[], facts, synthesis, TXID in meta.payment.txid
 

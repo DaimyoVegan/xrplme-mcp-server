@@ -85,8 +85,8 @@ python3 examples/mcp_client_example.py
 | `xrplme_get_survey_questions` | Free | Free | Feedback questions |
 | `xrplme_submit_survey` | Free | Free | Submit feedback |
 | `xrplme_get_survey_stats` | Free | Free | Quality stats |
-| `xrplme_get_country_data` | 0.5 XRP | 0.25 USDC | Structured data + sources |
-| `xrplme_get_country_schema` | 0.1 XRP | 0.05 USDC | Field schema |
+| `xrplme_get_country_data` | 5 XRP | 7.0 USDC | Structured data + sources |
+| `xrplme_get_country_schema` | 1 XRP | 1.0 USDC | Field schema |
 
 ## Response Schema
 

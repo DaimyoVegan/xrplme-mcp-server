@@ -52,8 +52,8 @@ Eight tools are exposed. Six are free; two require payment.
 
 | Tier | XRP Ledger | Solana | Card (on-ramp) |
 |---|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 0.1 XRP | 1.0 USDC | $2 |
-| AI-enhanced (`xrplme_get_country_data`) | 0.5 XRP | 7.0 USDC | $25 |
+| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | $2 |
+| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | $25 |
 
 `xrplme_get_pricing` always returns the live values — query it rather than
 hard-coding these.

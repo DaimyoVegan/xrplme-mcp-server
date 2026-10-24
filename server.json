@@ -3,7 +3,7 @@
   "name": "io.github.DaimyoVegan/xrplme-paid",
   "title": "XRPLME Country Intelligence",
   "description": "Source-backed country policy data for AI agents; pay-per-call via x402 (XRP or USDC). Structured JSON with sources[], confidence, schema at https://xrplme.online/schema/v1/response-schema.json",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "url": "https://github.com/DaimyoVegan/xrplme-mcp-server",
     "source": "github"

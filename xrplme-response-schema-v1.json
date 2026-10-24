@@ -29,7 +29,7 @@
           "properties": {
             "rail": { "type": "string", "enum": ["xrpl", "solana", "card"] },
             "txid": { "type": "string", "description": "On-chain transaction hash (empty if card on-ramp still settling)." },
-            "amount": { "type": "string", "example": "0.5 XRP" },
+            "amount": { "type": "string", "example": "5 XRP" },
             "invoice_id": { "type": "string" }
           }
         },

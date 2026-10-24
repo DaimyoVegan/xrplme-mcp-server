@@ -27,7 +27,7 @@ class XRPLMETool:
         self.wallet_seed = wallet_seed
 
     def get_country_data(self, country: str, query: str) -> dict:
-        """Get structured country policy data. Cost: 0.5 XRP or 0.25 USDC."""
+        """Get structured country policy data. Cost: 5 XRP or 7.00 USDC."""
         # Step 1: Get 402 with payment requirements
         resp = requests.post(
             f"{BASE_URL}/{country}/bot",

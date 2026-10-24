@@ -3,7 +3,7 @@
   "name": "XRPLME Country Intelligence MCP Agent",
   "description": "Source-backed country policy data for AI agents; pay-per-call via x402. Structured JSON with sources[], confidence, schema at https://xrplme.online/schema/v1/response-schema.json",
   "url": "https://api.xrplme.online/mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authentication": {
     "type": "none"
   },
@@ -24,7 +24,7 @@
     "skills": [
       {
         "name": "xrplme_get_country_data",
-        "description": "Latest structured policy data for one country. Returns JSON with meta, sources[], facts, synthesis, agent_hints. Paid: XRP 0.5 or USDC 0.25.",
+        "description": "Latest structured policy data for one country. Returns JSON with meta, sources[], facts, synthesis, agent_hints. Paid: 5 XRP or $7.00 USDC.",
         "input_schema": {
           "type": "object",
           "properties": {
@@ -114,8 +114,8 @@
     "registryPackageName": "github.DaimyoVegan.xrplme-mcp-server"
   },
   "pricing": {
-    "standard": "1 XRP or 0.05 USDC",
-    "ai": "5 XRP or 0.25 USDC",
+    "standard": "1 XRP or $1.00 USDC",
+    "ai": "5 XRP or $7.00 USDC",
     "notes": "Payment is auth. 6 free tools. Card on-ramp available."
   },
   "logo_url": "https://xrplme.online/favicon.ico",
