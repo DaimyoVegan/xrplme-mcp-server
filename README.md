@@ -51,10 +51,26 @@ Eight tools are exposed. Six are free; two require payment.
 
 ### Prices
 
-| Tier | XRP Ledger | Solana | Base | Card (on-ramp) |
-|---|---|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 1.0 USDC | $2 |
-| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC | $25 |
+| Tier | XRP Ledger | Solana | Base |
+|---|---|---|---|
+| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 1.0 USDC |
+| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC |
+
+### Investigate: screening and company look-up
+
+Two more datasets, same rails, same payment flow. These are plain HTTP
+endpoints today — they are not MCP tools yet.
+
+| Endpoint | XRP Ledger | Solana / Base |
+|---|---|---|
+| `/wc/screen/bot` | 2 XRP | $2.00 USDC |
+| `/wc/entity/lookup/bot` | 1 XRP | $1.00 USDC |
+| `/wc/entity/ownership/bot` | 5 XRP | $5.00 USDC |
+
+Append `-solana` or `-evm` to the path for the USDC rails. Screening takes
+`{"name": "..."}`; look-up and ownership take `{"query": "..."}`.
+
+Machine-readable pricing for agents: **https://xrplme.online/llms.txt**
 
 `xrplme_get_pricing` always returns the live values — query it rather than
 hard-coding these.
