@@ -44,10 +44,20 @@ Eight tools are exposed. Six are free; two require payment.
 | `xrplme_get_country_status` | Live health probe for one country | Free |
 | `xrplme_get_pricing` | Current prices for every rail | Free |
 | `xrplme_get_country_data` | Latest structured data + sources + freshness for one country | **Paid** |
-| `xrplme_get_country_schema` | Field schema for one country (JSON Schema) | **Paid** |
+| `xrplme_get_country_schema` | Standard data for one country: structured record + freshness ($1 tier) | **Paid** |
 | `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
 | `xrplme_submit_survey` | Submit feedback | Free |
 | `xrplme_get_survey_stats` | Aggregated survey statistics | Free |
+
+### Investigate tools
+
+| Tool | What it does | Price |
+|---|---|---|
+| `xrplme_screen` | Screening check for a person or company: matches, programme, designation date, citation | **$2.00** (2 XRP) |
+| `xrplme_entity_lookup` | Company look-up: legal name, status, jurisdiction, permanent entity ID | **$1.00** (1 XRP) |
+| `xrplme_entity_ownership` | Ownership chain to the ultimate parent plus direct subsidiaries | **$5.00** (5 XRP) |
+
+All three also accept USDC on Solana and Base via the usual `x_sol_payload` / `x_base_tx` arguments.
 
 ### Prices
 
