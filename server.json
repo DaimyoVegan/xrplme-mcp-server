@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.DaimyoVegan/xrplme-paid",
   "title": "XRPLME Country Intelligence",
-  "description": "Source-backed country policy data for AI agents. Pay per call in XRP or USDC (Solana, Base).",
-  "version": "1.1.0",
+  "description": "Country data and business screening for AI agents. Pay per call in XRP or USDC on three rails.",
+  "version": "1.2.0",
   "repository": {
     "url": "https://github.com/DaimyoVegan/xrplme-mcp-server",
     "source": "github"
