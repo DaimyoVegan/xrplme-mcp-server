@@ -1,7 +1,8 @@
 # XRPLME Country Intelligence — MCP Server
 
-Source-backed economic and policy data for 30 countries, served over MCP and paid
-per call with [x402](https://x402.org) — settled in **XRP** or **USDC**.
+Source-backed economic and policy data for 90 countries, served over MCP and paid
+per call with [x402](https://x402.org) — settled in **XRP**, or **USDC** on Solana
+and Base.
 
 No accounts, no API keys. The payment *is* the authentication.
 
@@ -39,9 +40,9 @@ Eight tools are exposed. Six are free; two require payment.
 
 | Tool | What it does | Cost |
 |---|---|---|
-| `xrplme_list_countries` | List the 30 countries | Free |
+| `xrplme_list_countries` | List the 90 countries | Free |
 | `xrplme_get_country_status` | Live health probe for one country | Free |
-| `xrplme_get_pricing` | Current prices for both rails | Free |
+| `xrplme_get_pricing` | Current prices for every rail | Free |
 | `xrplme_get_country_data` | Latest structured data + sources + freshness for one country | **Paid** |
 | `xrplme_get_country_schema` | Field schema for one country (JSON Schema) | **Paid** |
 | `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
@@ -50,10 +51,10 @@ Eight tools are exposed. Six are free; two require payment.
 
 ### Prices
 
-| Tier | XRP Ledger | Solana | Card (on-ramp) |
-|---|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | $2 |
-| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | $25 |
+| Tier | XRP Ledger | Solana | Base | Card (on-ramp) |
+|---|---|---|---|---|
+| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 1.0 USDC | $2 |
+| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC | $25 |
 
 `xrplme_get_pricing` always returns the live values — query it rather than
 hard-coding these.
@@ -65,10 +66,13 @@ hard-coding these.
 1. Call a paid tool with no payment. The server replies **HTTP 402** with the
    exact amount, asset, recipient, and accepted networks. Nothing is charged and
    no data is returned.
-2. Pay on any of three rails:
+2. Pay on any of four rails:
    - **XRP Ledger** — pass `X-PAYMENT-SIGNATURE` + `X-INV-ID` headers
    - **Solana** — pass `X-PAYMENT-SIGNATURE` header with a base64-encoded V2
      payment payload containing the signed Solana transaction
+   - **Base** — send USDC on Base to the `payTo` in the challenge, then pass the
+     transaction hash as `x_base_tx` (MCP tool argument) or as
+     `PAYMENT-SIGNATURE: {"txHash":"0x…"}` on the HTTP routes
    - **Credit card** — open the Crossmint on-ramp URL from
      `https://api.xrplme.online/api/v1/card/start`, buy XRP with a card in
      your browser, then pay the x402 invoice. No crypto wallet required.
@@ -84,9 +88,11 @@ rejected. Data is released only after settlement is confirmed, never before.
 |---|---|
 | XRP Ledger | `xrpl:0` (mainnet) |
 | Solana | `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp` (mainnet) |
+| Base | `eip155:8453` (mainnet) |
 
 Solana payments use native USDC
-(`EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`).
+(`EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`). Base payments use USDC on Base
+(`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`).
 
 ### Solana payment details
 
@@ -117,6 +123,29 @@ client must:
 See [`xrplme-mcp-client/examples/x402_payment_solana.py`](https://github.com/DaimyoVegan/xrplme-mcp-client/blob/main/examples/x402_payment_solana.py)
 for a complete end-to-end example.
 
+### Base payment details
+
+Base uses the same x402 `exact` scheme, but the proof is a settled transfer rather
+than a signed transaction. The 402 gives you `payTo` and `amount`; you send that
+much USDC on Base from any wallet; you hand back the transaction hash — as
+`x_base_tx` on the MCP tools, or as `PAYMENT-SIGNATURE: {"txHash":"0x…"}` (JSON or
+base64 JSON) on the HTTP routes.
+
+The server then reads the receipt and verifies the token, the recipient, the amount
+and the age of the transfer itself. No facilitator sits in the path, so nothing has
+to vouch for the payment on trust.
+
+One transfer buys one call. A reused hash is refused, and so is a transfer below the
+tier price, older than one hour, on another chain, or sent to another address.
+
+A Base Sepolia twin (`eip155:84532`, test USDC) verifies identically and answers
+`test_payment_verified` instead of returning data — test money is free at a faucet,
+so it never buys country records.
+
+See [`xrplme-mcp-client/examples/x402_payment_base.py`](https://github.com/DaimyoVegan/xrplme-mcp-client/blob/main/examples/x402_payment_base.py)
+for a stdlib client that fetches the challenge, prints what to pay, and retries with
+proof of payment.
+
 ---
 
 ## Registry
@@ -139,7 +168,7 @@ Listed in the official MCP Registry as
 - Data is sourced from national statistics offices, central banks, and
   regulators. Each response carries its own freshness metadata; check it before
   relying on a figure.
-- Coverage is 30 countries. `xrplme_list_countries` is the authoritative list.
+- Coverage is 90 countries. `xrplme_list_countries` is the authoritative list.
 ---
 
 ## Response Schema
