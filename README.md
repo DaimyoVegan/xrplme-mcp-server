@@ -1,6 +1,6 @@
 # XRPLME Country Intelligence — MCP Server
 
-Source-backed economic and policy data for 90 countries, served over MCP and paid
+Source-backed economic and policy data for 91 countries, served over MCP and paid
 per call with [x402](https://x402.org) — settled in **XRP**, or **USDC** on Solana
 and Base.
 
@@ -40,7 +40,7 @@ Eight tools are exposed. Six are free; two require payment.
 
 | Tool | What it does | Cost |
 |---|---|---|
-| `xrplme_list_countries` | List the 90 countries | Free |
+| `xrplme_list_countries` | List the 91 countries | Free |
 | `xrplme_get_country_status` | Live health probe for one country | Free |
 | `xrplme_get_pricing` | Current prices for every rail | Free |
 | `xrplme_get_country_data` | Latest structured data + sources + freshness for one country | **Paid** |
@@ -194,7 +194,7 @@ Listed in the official MCP Registry as
 - Data is sourced from national statistics offices, central banks, and
   regulators. Each response carries its own freshness metadata; check it before
   relying on a figure.
-- Coverage is 90 countries. `xrplme_list_countries` is the authoritative list.
+- Coverage is 91 countries. `xrplme_list_countries` is the authoritative list.
 ---
 
 ## Response Schema
