@@ -63,7 +63,7 @@ All three also accept USDC on Solana and Base via the usual `x_sol_payload` / `x
 
 | Tier | XRP Ledger | Solana | Base |
 |---|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 1.0 USDC |
+| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 0.5 USDC — Black Friday to Nov 30, 11:59 PM PST |
 | AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC |
 
 ### Investigate: screening and company look-up
