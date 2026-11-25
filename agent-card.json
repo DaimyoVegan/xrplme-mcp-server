@@ -3,7 +3,7 @@
   "name": "XRPLME Country Intelligence MCP Agent",
   "description": "Source-backed country policy data for AI agents; pay-per-call via x402. Structured JSON with sources[], confidence, schema at https://xrplme.online/schema/v1/response-schema.json",
   "url": "https://api.xrplme.online/mcp",
-  "version": "1.0.2",
+  "version": "1.3.0",
   "authentication": {
     "type": "none"
   },
