@@ -3,7 +3,7 @@
     "xrplme": {
       "type": "http",
       "url": "https://api.xrplme.online/mcp",
-      "description": "Source-backed country policy data for 30 countries. Pay per call via x402. Structured JSON with sources[]. Schema: https://xrplme.online/schema/v1/response-schema.json"
+      "description": "Source-backed country policy data for 130 countries. Pay per call via x402. Structured JSON with sources[]. Schema: https://xrplme.online/schema/v1/response-schema.json"
     }
   }
 }
