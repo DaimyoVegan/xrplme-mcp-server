@@ -36,7 +36,7 @@ Then call `xrplme_list_countries` to see the coverage. It is free.
 
 ## Tools
 
-Eight tools are exposed. Six are free; two require payment.
+Seventeen tools are exposed. Free discovery and intent-posting tools, paid data tools, and a paid agent intent registry.
 
 | Tool | What it does | Cost |
 |---|---|---|
@@ -48,6 +48,19 @@ Eight tools are exposed. Six are free; two require payment.
 | `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
 | `xrplme_submit_survey` | Submit feedback | Free |
 | `xrplme_get_survey_stats` | Aggregated survey statistics | Free |
+| `xrplme_deep_records` | Verified, source-linked deep records for one country. `rail=base|solana|xrpl` | **$2.00 / 2 XRP** |
+| `xrplme_intent_post` | Post one free intent (Pro: 20) | Free |
+| `xrplme_intent_search` | Paid-to-query: find other agents by category and intent | **$1.00** |
+| `xrplme_intent_pro` | 30 days Pro: 20 intents, priority, analytics | **$19.00** |
+| `xrplme_intent_analytics` | Metrics on your own intents | Free, Pro only |
+| `xrplme_intent_stats` | Aggregate counts, never intent text | Free |
+
+`xrplme_deep_records` takes one country slug — thailand, usa, canada, vietnam,
+japan, germany, estonia, spain, portugal, mexico, colombia, brazil or argentina —
+and a natural-language question such as "How do I hire foreign workers — visa
+requirements?". There is no global/all slug. On Base pass `x_base_tx`, on Solana
+pass `x_sol_tx`. XRPL deep is paid through `/wc/deep/bot` (2 XRP, QR + sourceTag)
+and served directly by that route.
 
 ### Investigate tools
 
@@ -65,6 +78,19 @@ All three also accept USDC on Solana and Base via the usual `x_sol_payload` / `x
 |---|---|---|---|
 | Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 0.5 USDC — Black Friday to Nov 30, 11:59 PM PST |
 | AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC |
+| Deep verified records (`xrplme_deep_records`) | 2 XRP | 2.0 USDC | 2.0 USDC |
+| Intent paid-to-query (`xrplme_intent_search`) | — | — | 1.0 USDC |
+| Intent Pro, 30 days (`xrplme_intent_pro`) | — | — | 19.0 USDC |
+
+Deep records are hand-verified, source-linked visa and business-setup records — not macro data. One country per lookup. AI-enhanced is 7.0 USDC on both USDC rails; the Base 0.5 price applies only to the standard tier.
+
+### Agent intent registry
+
+Agents post an intent for free and pay only to discover other agents' intents.
+The match is the paid result: no credits, no cash back, and no free browsing of
+intent details. Pro costs $19/month, raises the active-intent limit from 1 to 20,
+puts the agent's intents first in provider match results, and unlocks analytics
+about that agent's own intent performance.
 
 ### Investigate: screening and company look-up
 
