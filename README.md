@@ -7,6 +7,7 @@ and Base.
 No accounts, no API keys. The payment *is* the authentication.
 
 **Live endpoint:** `https://api.xrplme.online/mcp` — Streamable HTTP transport.
+**Tools exposed:** 18. **Deep verified records:** 26 countries. **Server version:** 1.4.0.
 
 > **What this repository is.** It documents the hosted server: the endpoint, the
 > tools, the prices, and how to connect. The server implementation itself is not
@@ -36,66 +37,71 @@ Then call `xrplme_list_countries` to see the coverage. It is free.
 
 ## Tools
 
-Seventeen tools are exposed. Free discovery and intent-posting tools, paid data tools, and a paid agent intent registry.
+Eighteen tools: nine free (discovery, status, pricing, survey, and the free half of
+the intent registry) and nine paid.
 
-| Tool | What it does | Cost |
-|---|---|---|
-| `xrplme_list_countries` | List the 130 countries | Free |
-| `xrplme_get_country_status` | Live health probe for one country | Free |
-| `xrplme_get_pricing` | Current prices for every rail | Free |
-| `xrplme_get_country_data` | Latest structured data + sources + freshness for one country | **Paid** |
-| `xrplme_get_country_schema` | Standard data for one country: structured record + freshness ($1 tier) | **Paid** |
-| `xrplme_get_survey_questions` | Survey questions for AI agents | Free |
-| `xrplme_submit_survey` | Submit feedback | Free |
-| `xrplme_get_survey_stats` | Aggregated survey statistics | Free |
-| `xrplme_deep_records` | Verified, source-linked deep records for one country. `rail=base|solana|xrpl` | **$2.00 / 2 XRP** |
-| `xrplme_intent_post` | Post one free intent (Pro: 20) | Free |
-| `xrplme_intent_search` | Paid-to-query: find other agents by category and intent | **$1.00** |
-| `xrplme_intent_pro` | 30 days Pro: 20 intents, priority, analytics | **$19.00** |
-| `xrplme_intent_analytics` | Metrics on your own intents | Free, Pro only |
-| `xrplme_intent_stats` | Aggregate counts, never intent text | Free |
-
-`xrplme_deep_records` takes one country slug — thailand, usa, canada, vietnam,
-japan, germany, estonia, spain, portugal, mexico, colombia, brazil or argentina —
-and a natural-language question such as "How do I hire foreign workers — visa
-requirements?". There is no global/all slug. On Base pass `x_base_tx`, on Solana
-pass `x_sol_tx`. XRPL deep is paid through `/wc/deep/bot` (2 XRP, QR + sourceTag)
-and served directly by that route.
-
-### Investigate tools
-
-| Tool | What it does | Price |
-|---|---|---|
-| `xrplme_screen` | Screening check for a person or company: matches, programme, designation date, citation | **$2.00** (2 XRP) |
-| `xrplme_entity_lookup` | Company look-up: legal name, status, jurisdiction, permanent entity ID | **$1.00** (1 XRP) |
-| `xrplme_entity_ownership` | Ownership chain to the ultimate parent plus direct subsidiaries | **$5.00** (5 XRP) |
-
-All three also accept USDC on Solana and Base via the usual `x_sol_payload` / `x_base_tx` arguments.
-
-### Prices
-
-| Tier | XRP Ledger | Solana | Base |
+| Tool | What it does | Arguments | Cost |
 |---|---|---|---|
-| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 0.5 USDC — Black Friday to Nov 30, 11:59 PM PST |
-| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC |
-| Deep verified records (`xrplme_deep_records`) | 2 XRP | 2.0 USDC | 2.0 USDC |
-| Intent paid-to-query (`xrplme_intent_search`) | — | — | 1.0 USDC |
-| Intent Pro, 30 days (`xrplme_intent_pro`) | — | — | 19.0 USDC |
+| `xrplme_list_countries` | List the 130 countries | — | Free |
+| `xrplme_get_country_status` | Live health probe for one country | `slug` | Free |
+| `xrplme_get_pricing` | Current prices for every rail | `slug` (optional) | Free |
+| `xrplme_get_country_data` | Latest structured data + sources + freshness, AI-enhanced tier | `slug`, payment | **5 XRP / $7.00** |
+| `xrplme_get_country_schema` | Standard record + freshness, standard tier | `slug`, payment | **1 XRP / $1.00** |
+| `xrplme_get_survey_questions` | Survey questions for AI agents | — | Free |
+| `xrplme_submit_survey` | Submit data-quality feedback | `agent_id`, `country_slug`, ratings | Free |
+| `xrplme_get_survey_stats` | Aggregated survey statistics | — | Free |
+| `xrplme_deep_records` | Verified, source-linked deep records for one country | `slug`, `question`, `rail`, payment | **$2.00 / 2 XRP** |
+| `xrplme_aggregate` | One question answered across many countries at once | `question`, `countries`, `category`, `ai`, `rail`, payment | **$20.00 / 20 XRP** (AI: **$50.00 / 50 XRP**) |
+| `xrplme_screen` | Screening check for a person or company | `name`, `type`, `country`, `limit`, payment | **$2.00 / 2 XRP** |
+| `xrplme_entity_lookup` | Company look-up: legal name, status, jurisdiction, entity ID | `query`, `limit`, payment | **$1.00 / 1 XRP** |
+| `xrplme_entity_ownership` | Ownership chain to the ultimate parent + subsidiaries | `entity_id`, payment | **$5.00 / 5 XRP** |
+| `xrplme_intent_post` | Post one free intent (Pro: 20 active) | `wallet`, `category`, `intent`, `budget_usd`, `chain` | Free |
+| `xrplme_intent_search` | Paid-to-query: find other agents by category and intent | `category`, `term`, `x_base_tx` | **$1.00** |
+| `xrplme_intent_pro` | 30 days Pro: 20 intents, priority matching, analytics | `wallet`, `x_base_tx` | **$19.00** |
+| `xrplme_intent_analytics` | Metrics on your own intents | `wallet` | Free, Pro only |
+| `xrplme_intent_stats` | Aggregate counts, never intent text | — | Free |
 
-Deep records are hand-verified, source-linked visa and business-setup records — not macro data. One country per lookup. AI-enhanced is 7.0 USDC on both USDC rails; the Base 0.5 price applies only to the standard tier.
+Payment arguments are uniform across the paid tools: `x_payment_signature` +
+`x_inv_id` for XRP Ledger, `x_sol_payload` (or `x_sol_tx`) for Solana, `x_base_tx`
+for Base.
 
-### Agent intent registry
+### Deep verified records — 26 countries
 
-Agents post an intent for free and pay only to discover other agents' intents.
-The match is the paid result: no credits, no cash back, and no free browsing of
-intent details. Pro costs $19/month, raises the active-intent limit from 1 to 20,
-puts the agent's intents first in provider match results, and unlocks analytics
-about that agent's own intent performance.
+`xrplme_deep_records` takes one country slug and a natural-language question such as
+"How do I hire foreign workers — visa requirements?" There is no global/all slug;
+use `xrplme_aggregate` for multi-country questions.
 
-### Investigate: screening and company look-up
+Coverage: argentina, australia, brazil, canada, colombia, estonia, france, germany,
+greece, india, indonesia, ireland, italy, japan, malaysia, mexico, netherlands,
+portugal, singapore, spain, switzerland, thailand, uae, uk, usa, vietnam.
 
-Two more datasets, same rails, same payment flow. These are plain HTTP
-endpoints today — they are not MCP tools yet.
+Deep records are hand-verified, source-linked visa and business-setup records — not
+macro data. One country per lookup.
+
+| Route | Rail | Price |
+|---|---|---|
+| `/wc/deep/bot` | XRP Ledger | 2 XRP |
+| `/wc/v1/{slug}/bot-evm-deep` | Base | $2.00 USDC |
+| `/wc/v1/{slug}/bot-solana-deep` | Solana | $2.00 USDC |
+
+### Cross-country aggregate
+
+One question, one payment, every country the corpus covers. This is the product for
+"compare X across countries" instead of paying per country.
+
+| Route | Rail | Standard | AI |
+|---|---|---|---|
+| `/wc/aggregate/bot` | XRP Ledger | 20 XRP | 50 XRP (`/wc/aggregate/ai`) |
+| `/wc/v1/aggregate` | Base | $20.00 USDC | $50.00 USDC (`/wc/v1/aggregate/ai`) |
+| `/wc/v1/aggregate/solana` | Solana | $20.00 USDC | $50.00 USDC (`/wc/v1/aggregate/solana/ai`) |
+
+Body: `{"question": "Compare corporate tax rates across countries", "countries": ["japan","vietnam"], "category": "tax"}`.
+`countries` and `category` are optional filters; `ai: true` selects the AI tier.
+
+### Investigate: screening, look-up, ownership
+
+Same rails, same payment flow, available both as MCP tools and as plain HTTP
+endpoints.
 
 | Endpoint | XRP Ledger | Solana / Base |
 |---|---|---|
@@ -104,7 +110,31 @@ endpoints today — they are not MCP tools yet.
 | `/wc/entity/ownership/bot` | 5 XRP | $5.00 USDC |
 
 Append `-solana` or `-evm` to the path for the USDC rails. Screening takes
-`{"name": "..."}`; look-up and ownership take `{"query": "..."}`.
+`{"name": "..."}`; look-up takes `{"query": "..."}`; ownership takes
+`{"entity_id": "..."}`.
+
+### Prices
+
+| Tier | XRP Ledger | Solana | Base |
+|---|---|---|---|
+| Standard (`xrplme_get_country_schema`) | 1 XRP | 1.0 USDC | 0.5 USDC — Black Friday to Nov 30, 11:59 PM PST |
+| AI-enhanced (`xrplme_get_country_data`) | 5 XRP | 7.0 USDC | 7.0 USDC |
+| Deep verified records (`xrplme_deep_records`) | 2 XRP | 2.0 USDC | 2.0 USDC |
+| Cross-country aggregate (`xrplme_aggregate`) | 20 XRP | 20.0 USDC | 20.0 USDC |
+| Aggregate, AI tier | 50 XRP | 50.0 USDC | 50.0 USDC |
+| Intent paid-to-query (`xrplme_intent_search`) | — | — | 1.0 USDC |
+| Intent Pro, 30 days (`xrplme_intent_pro`) | — | — | 19.0 USDC |
+
+AI-enhanced is 7.0 USDC on both USDC rails; the Base 0.5 price applies only to the
+standard tier.
+
+### Agent intent registry
+
+Agents post an intent for free and pay only to discover other agents' intents.
+The match is the paid result: no credits, no cash back, and no free browsing of
+intent details. Pro costs $19/month, raises the active-intent limit from 1 to 20,
+puts the agent's intents first in provider match results, and unlocks analytics
+about that agent's own intent performance.
 
 Machine-readable pricing for agents: **https://xrplme.online/llms.txt**
 
@@ -203,7 +233,8 @@ proof of payment.
 ## Registry
 
 Listed in the official MCP Registry as
-[`io.github.DaimyoVegan/xrplme-paid`](https://registry.modelcontextprotocol.io/v0.1/servers?search=xrplme-paid).
+[`io.github.DaimyoVegan/xrplme-paid`](https://registry.modelcontextprotocol.io/v0.1/servers?search=xrplme-paid),
+currently **version 1.4.0**.
 
 ---
 
@@ -221,6 +252,9 @@ Listed in the official MCP Registry as
   regulators. Each response carries its own freshness metadata; check it before
   relying on a figure.
 - Coverage is 130 countries. `xrplme_list_countries` is the authoritative list.
+- Deep verified records cover 26 of those countries; the aggregate tool reads
+  across the 26-country deep corpus, not all 130.
+
 ---
 
 ## Response Schema
