@@ -1,13 +1,14 @@
-# XRPLME Country Intelligence — MCP Server
+# XRPLME — Paid Data APIs for AI Agents (MCP Server)
 
-Source-backed economic and policy data for 130 countries, served over MCP and paid
-per call with [x402](https://x402.org) — settled in **XRP**, or **USDC** on Solana
-and Base.
+Source-backed data for 130 countries — policy and regulation, import duty rates,
+FX, weather and air quality, public procurement tenders — plus sanctions screening,
+company look-up and ownership chains. Served over MCP and paid per call with
+[x402](https://x402.org), settled in **XRP**, or **USDC** on Solana and Base.
 
 No accounts, no API keys. The payment *is* the authentication.
 
 **Live endpoint:** `https://api.xrplme.online/mcp` — Streamable HTTP transport.
-**Tools exposed:** 18. **Deep verified records:** 26 countries. **Server version:** 1.4.0.
+**Tools exposed:** 22. **Deep verified records:** 26 countries. **Server version:** 1.5.0.
 
 > **What this repository is.** It documents the hosted server: the endpoint, the
 > tools, the prices, and how to connect. The server implementation itself is not
@@ -37,8 +38,8 @@ Then call `xrplme_list_countries` to see the coverage. It is free.
 
 ## Tools
 
-Eighteen tools: nine free (discovery, status, pricing, survey, and the free half of
-the intent registry) and nine paid.
+Twenty-two tools: nine free (discovery, status, pricing, survey, and the free half of
+the intent registry) and thirteen paid.
 
 | Tool | What it does | Arguments | Cost |
 |---|---|---|---|
@@ -55,6 +56,10 @@ the intent registry) and nine paid.
 | `xrplme_screen` | Screening check for a person or company | `name`, `type`, `country`, `limit`, payment | **$2.00 / 2 XRP** |
 | `xrplme_entity_lookup` | Company look-up: legal name, status, jurisdiction, entity ID | `query`, `limit`, payment | **$1.00 / 1 XRP** |
 | `xrplme_entity_ownership` | Ownership chain to the ultimate parent + subsidiaries | `entity_id`, payment | **$5.00 / 5 XRP** |
+| `xrplme_customs` | Import duty rates for a product code (us, gb, jp, ca, eu, th, vn…) | `hs`, `jurisdiction`, `limit`, payment | **$0.50 / $1.00 / 1 XRP** |
+| `xrplme_fx` | Reference FX rates for a base currency | `base`, `symbols`, payment | **$0.50 / $1.00 / 1 XRP** |
+| `xrplme_weather` | Weather and air quality for a country | `slug`, payment | **$0.50 / $1.00 / 1 XRP** |
+| `xrplme_tenders` | Public procurement tenders from national portals | `query`, `category`, `unspsc`, `limit`, payment | **$0.50 / $1.00 / 1 XRP** |
 | `xrplme_intent_post` | Post one free intent (Pro: 20 active) | `wallet`, `category`, `intent`, `budget_usd`, `chain` | Free |
 | `xrplme_intent_search` | Paid-to-query: find other agents by category and intent | `category`, `term`, `x_base_tx` | **$1.00** |
 | `xrplme_intent_pro` | 30 days Pro: 20 intents, priority matching, analytics | `wallet`, `x_base_tx` | **$19.00** |
